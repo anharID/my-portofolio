@@ -1,12 +1,17 @@
 // Navbar Fixed
 window.onscroll = function () {
   const header = document.querySelector("header");
+  const toTop = document.querySelector("#backToTop");
   const fixedNav = header.offsetTop;
 
   if (window.pageYOffset > fixedNav) {
     header.classList.add("navbar-fixed");
+    toTop.classList.remove("hidden");
+    toTop.classList.add("flex");
   } else {
     header.classList.remove("navbar-fixed");
+    toTop.classList.add("hidden");
+    toTop.classList.remove("flex");
   }
 };
 
@@ -19,16 +24,31 @@ hamburger.addEventListener("click", function () {
   navMenu.classList.toggle("hidden");
 });
 
-// Scrolling
-var navLinks = document.querySelectorAll("nav a");
-navLinks.forEach(function (link) {
-  link.addEventListener("click", function (event) {
-    event.preventDefault();
-    var target = document.querySelector(this.getAttribute("href"));
-    var targetPosition = target.offsetTop;
-    window.scrollTo({
-      top: targetPosition,
-      behavior: "smooth",
-    });
-  });
+// Klik di luar hamburger
+window.addEventListener("click", function (e) {
+  if (e.target != hamburger && e.target != navMenu) {
+    hamburger.classList.remove("hamburger-active");
+    navMenu.classList.add("hidden");
+  }
 });
+
+// Darkmode Toggle
+const darkToogle = document.querySelector("#dark-toggle");
+const html = document.querySelector("html");
+
+darkToogle.addEventListener("click", function () {
+  if (darkToogle.checked) {
+    html.classList.add("dark");
+    localStorage.theme = "dark";
+  } else {
+    html.classList.remove("dark");
+    localStorage.theme = "light";
+  }
+});
+
+// toogle sesuai mode
+if (localStorage.theme === "dark" || (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+  darkToogle.checked = true;
+} else {
+  darkToogle.checked = true;
+}
